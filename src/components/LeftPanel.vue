@@ -34,6 +34,7 @@
       <ul>
         <li class="">
           <router-link :to="{name: 'SkuMgrList'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">商品列表</span></router-link>
+          <router-link :to="{name: 'SkuMgrImport'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">批量导入</span></router-link>
         </li>
       </ul>
     </nav>
