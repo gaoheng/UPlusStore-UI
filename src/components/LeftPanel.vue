@@ -33,7 +33,7 @@
 
       <ul>
         <li class="">
-          <a href="index.html" title="blank_"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">Blank</span></a>
+          <router-link :to="{name: 'SkuMgrList'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">商品列表</span></router-link>
         </li>
       </ul>
     </nav>
