@@ -21,6 +21,11 @@ export default new Router({
       path: '/sku/import',
       name: 'SkuMgrImport',
       component: SkuMgrImport
+    },
+    {
+      path: '/checkout-counter',
+      name: 'CheckoutCounter',
+      component: CheckoutCounter
     }
   ]
 })
