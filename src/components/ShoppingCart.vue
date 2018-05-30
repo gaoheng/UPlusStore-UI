@@ -42,7 +42,7 @@
                 <button type="submit" class="btn btn-lg btn-default">
                   取消
                 </button>
-                <button type="button" class="btn btn-lg btn-primary">
+                <button type="button" class="btn btn-lg btn-primary" @click="deal">
                   结账
                 </button>
               </div>
@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import numeral from 'numeral'
 import ShoppingCartItem from '@/components/ShoppingCartItem'
 
 export default {
@@ -71,8 +72,13 @@ export default {
     }
   },
   methods: {
-    add: function (item) {
-      this.items.push(item)
+    deal: function () {
+      var order = this.order
+      this.$http.post('http://localhost:8080/orders', order).then(resp => {
+        console.log(resp)
+      }, resp => {
+        console.log(resp)
+      })
     },
     discountChanged: function (e) {
       console.log('discount changed...')
@@ -81,7 +87,7 @@ export default {
         discount = '0'
       }
       this.discount = Number(discount)
-      this.total = this.summary.cost - this.discount
+      this.total = numeral(this.summary.cost - this.discount).format('0.00')
     },
     totalChanged: function (e) {
       var total = e.target.value
@@ -89,10 +95,34 @@ export default {
         return
       }
       this.total = Number(total)
-      this.discount = this.summary.cost - this.total
+      this.discount = numeral(this.summary.cost - this.total).format('9.00')
     }
   },
   computed: {
+    order: function () {
+      var total = this.summary.cost
+      var discount = this.discount
+      var paid = this.total
+      var items = []
+      for (var i = 0; i < this.items.length; i++) {
+        var it = this.items[i]
+        items.push({
+          skuId: it.id,
+          skuName: it.name,
+          skuCode: it.code,
+          skuColor: it.color,
+          skuSize: it.size,
+          skuPrice: it.price,
+          quantity: it.quantity
+        })
+      }
+      return {
+        total: total,
+        discount: discount,
+        paid: paid,
+        items: items
+      }
+    },
     summary: function () {
       var summary = {
         quantity: 0,
@@ -105,13 +135,15 @@ export default {
           summary.cost = summary.cost + item.quantity * item.price
         }
       }
+      summary.quantity = numeral(summary.quantity).format('0.00')
+      summary.cost = numeral(summary.cost).format('0.00')
       return summary
     }
   },
   watch: {
     'summary.cost': function (newVal, oldVal) {
       console.log('Watch...')
-      this.total = this.summary.cost - this.discount
+      this.total = numeral(this.summary.cost - this.discount).format('0.00')
     }
   }
 }
