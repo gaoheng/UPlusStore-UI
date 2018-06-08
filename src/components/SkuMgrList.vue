@@ -52,7 +52,6 @@ export default {
     })
   },
   beforeDestroy: function () {
-    console.log('Before destroy...')
     $('#sku-mgr-list-table').DataTable().destroy()
   },
   methods: {

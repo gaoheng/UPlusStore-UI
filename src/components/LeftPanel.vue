@@ -10,9 +10,9 @@
         <a href="javascript:void(0);" id="show-shortcut" data-action="toggleShortcut">
           <img src="static/img/avatars/sunny.png" alt="me" class="online" />
           <span>
-            john.doe
-          </span>
-          <i class="fa fa-angle-down"></i>
+            优+Kids
+          </span><!--
+          <i class="fa fa-angle-down"></i>-->
         </a>
       </span>
     </div>
@@ -32,10 +32,14 @@
               -->
 
       <ul>
-        <li class="">
-          <router-link :to="{name: 'CheckoutCounter'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">收银台</span></router-link>
-          <router-link :to="{name: 'SkuMgrList'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">商品列表</span></router-link>
-          <router-link :to="{name: 'SkuMgrImport'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">批量导入</span></router-link>
+        <li>
+          <router-link :to="{name: 'checkout-counter'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">收银台</span></router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'sku-list'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">商品列表</span></router-link>
+        </li>
+        <li>
+          <router-link :to="{name: 'sku-import'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">批量导入</span></router-link>
         </li>
       </ul>
     </nav>
