@@ -5,10 +5,15 @@
       <div class="input-group margin-bottom-10">
         <input class="form-control input-lg" type="text" placeholder="输入货号进行搜索..." @keyup.enter="search" v-model.trim="code">
         <div class="input-group-btn">
-          <button class="btn btn-lg btn-default btn-primary" type="button">
+          <button class="btn btn-lg btn-default btn-primary" type="button" @click="search">
             <i class="fa fa-search"></i> 搜索
           </button>
         </div>
+      </div>
+    </div>
+    <div class="col col-md-8" v-show="notExists">
+      <div class="alert alert-danger alert-block margin-bottom-10" style="margin-bottom: 10px">
+        <h4 class="alert-heading">商品不存在！</h4>
       </div>
     </div>
   </div>
@@ -26,6 +31,7 @@ export default {
   data: function () {
     return {
       code: null,
+      notExists: false,
       items: []
     }
   },
@@ -38,8 +44,13 @@ export default {
         }
       }).then(resp => {
         var item = resp.body
-        this.add(item)
-        this.code = null
+        if (!item || item === null || item === '') {
+          this.notExists = true
+        } else {
+          this.notExists = false
+          this.add(item)
+          this.code = null
+        }
       }, resp => {
         console.log(resp)
       })

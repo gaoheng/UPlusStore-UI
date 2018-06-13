@@ -17,29 +17,16 @@
       </span>
     </div>
     <!-- end user info -->
-
-    <!-- NAVIGATION : This navigation is also responsive
-
-          To make this navigation dynamic please make sure to link the node
-          (the reference to the nav > ul) after page load. Or the navigation
-          will not initialize.
-          -->
     <nav>
-      <!--
-              NOTE: Notice the gaps after each icon usage <i></i>..
-              Please note that these links work a bit different than
-              traditional href="" links. See documentation for details.
-              -->
-
       <ul>
         <li>
-          <router-link :to="{name: 'checkout-counter'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">收银台</span></router-link>
+          <router-link :to="{name: 'checkout-counter'}"><i class="fa fa-lg fa-fw fa-cny"></i> <span class="menu-item-parent">收银台</span></router-link>
         </li>
         <li>
-          <router-link :to="{name: 'sku-list'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">商品列表</span></router-link>
+          <router-link :to="{name: 'sku-list'}"><i class="fa fa-lg fa-fw fa-archive"></i> <span class="menu-item-parent">商品列表</span></router-link>
         </li>
         <li>
-          <router-link :to="{name: 'sku-import'}"><i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent">批量导入</span></router-link>
+          <router-link :to="{name: 'sku-import'}"><i class="fa fa-lg fa-fw fa-upload"></i> <span class="menu-item-parent">批量导入</span></router-link>
         </li>
       </ul>
     </nav>

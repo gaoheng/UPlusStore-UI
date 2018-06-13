@@ -36,14 +36,27 @@
                   <input class="input-lg" :value="total" @keyup="totalChanged">
                 </label>
               </section>
+              <section v-show="done">
+                <div class="alert alert-success alert-block">
+                  <h4 class="alert-heading">操作成功！</h4>
+                </div>
+              </section>
+              <section v-show="error">
+                <div class="alert alert-danger alert-block" style="margin-bottom: 10px">
+                  <h4 class="alert-heading">操作失败！</h4>先拿小本本记好，然后去找程序员算账吧！！！
+                </div>
+              </section>
             </fieldset>
             <fieldset>
               <div class="pull-right">
-                <button type="submit" class="btn btn-lg btn-default">
+                <button type="submit" class="btn btn-lg btn-default" v-show="!done" @click="clear">
                   取消
                 </button>
-                <button type="button" class="btn btn-lg btn-primary" @click="deal">
+                <button type="button" class="btn btn-lg btn-primary" v-show="!done" @click="deal">
                   结账
+                </button>
+                <button type="button" class="btn btn-lg btn-primary" v-show="done" @click="clear">
+                  结束
                 </button>
               </div>
             </fieldset>
@@ -68,14 +81,25 @@ export default {
   data: function () {
     return {
       discount: 0.0,
-      total: 0.0
+      total: 0.0,
+      done: false,
+      error: false
     }
   },
   methods: {
+    clear: function () {
+      this.items = []
+      this.discount = 0.0
+      this.total = 0.0
+      this.done = false
+      this.error = false
+    },
     deal: function () {
       var order = this.order
       this.$http.post('http://localhost:8080/orders', order).then(resp => {
         console.log(resp)
+        this.done = true
+
       }, resp => {
         console.log(resp)
       })

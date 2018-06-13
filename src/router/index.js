@@ -19,7 +19,8 @@ export default new Router({
       path: 'sku',
       component: MainView,
       meta: {
-        title: '商品管理'
+        title: '商品管理',
+        iconClasses: 'fa fa-fw fa-archive'
       },
       children: [
         {
@@ -27,14 +28,16 @@ export default new Router({
           name: 'sku-list',
           component: SkuMgrList,
           meta: {
-            title: '全部商品'
+            title: '商品列表',
+            iconClasses: 'fa fa-fw fa-archive'
           }
         }, {
           path: 'import',
           name: 'sku-import',
           component: SkuMgrImport,
           meta: {
-            title: '批量导入'
+            title: '批量导入',
+            iconClasses: 'fa fa-fw fa-upload'
           }
         }
       ]
@@ -43,13 +46,17 @@ export default new Router({
       path: '',
       component: MainView,
       redirect: '/checkout-counter',
+      meta: {
+        title: '优+童装'
+      },
       children: [
         {
           path: 'checkout-counter',
           name: 'checkout-counter',
           component: CheckoutCounter,
           meta: {
-            title: '收银台'
+            title: '收银台',
+            iconClasses: 'fa fa-fw fa-cny'
           }
         }
       ]

@@ -67,13 +67,13 @@ export default {
             data: 'importStatus',
             orderable: false,
             searchable: false,
-            render: function(data, type, row, meta) {
+            render: function (data, type, row, meta) {
               if (data === 'DONE') {
-                return '<span class="label-success">成功</span>'
+                return '<span class="label label-success">成功</span>'
               } else if (data === 'PENDING') {
-                return '<span class="label-warning">待导入</span>'
+                return '<span class="label label-warning">待导入</span>'
               } else if (data === 'FAILED') {
-                return '<span class="label-warning">失败</span>'
+                return '<span class="label label-danger">失败</span>'
               }
             }},
           {'data': 'code', orderable: false, searchable: false},

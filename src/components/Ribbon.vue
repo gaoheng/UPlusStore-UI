@@ -4,21 +4,9 @@
 
     <!-- breadcrumb -->
     <ol class="breadcrumb">
-      <li>Home</li>
-      <li>Blank</li>
+      <li v-for="i in breadcrumbs" v-bind:key="i.name">{{ i.meta.title }}</li>
     </ol>
     <!-- end breadcrumb -->
-
-    <!-- You can also add more buttons to the
-            ribbon for further usability
-
-            Example below:
-
-            <span class="ribbon-button-alignment pull-right" style="margin-right:25px">
-                <a href="#" id="search" class="btn btn-ribbon hidden-xs" data-title="search"><i class="fa fa-grid"></i> Change Grid</a>
-                <span id="add" class="btn btn-ribbon hidden-xs" data-title="add"><i class="fa fa-plus"></i> Add</span>
-                <button id="search" class="btn btn-ribbon" data-title="search"><i class="fa fa-search"></i> <span class="hidden-mobile">Search</span></button>
-            </span> -->
 
   </div>
   <!-- END RIBBON -->
@@ -26,7 +14,30 @@
 
 <script>
 export default {
-  name: 'Ribbon'
+  name: 'Ribbon',
+  data: function () {
+    return {
+      breadcrumbs: []
+    }
+  },
+  methods: {
+    getBreadcrumbs: function () {
+      let matched = this.$route.matched.filter(item => item.name)
+      const first = matched[0]
+      if (first && first.name !== 'root') {
+        matched = [ { path: '/', meta: { title: '优+童装' } } ].concat(matched)
+      }
+      this.breadcrumbs = matched
+    }
+  },
+  watch: {
+    '$route': function () {
+      this.getBreadcrumbs()
+    }
+  },
+  created: function () {
+    this.getBreadcrumbs()
+  }
 }
 </script>
 
