@@ -97,7 +97,7 @@ export default {
         delta: this.mode === 'in' ? this.delta : this.delta * -1,
         reason: this.reason
       }
-      this.$http.put('http://localhost:8080/skus/' + this.skuId + '/stock', changement).then(resp => {
+      this.$http.put('skus/' + this.skuId + '/stock', changement).then(resp => {
         this.done = true
         this.error = false
       }, resp => {

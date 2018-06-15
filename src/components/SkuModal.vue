@@ -15,27 +15,27 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="code">货号</label>
-                <input id="code" type="text" class="form-control" placeholder="货号" required v-model="sku.code" :readonly="isUpdate"/>
+                <input id="code" type="text" class="form-control" placeholder="货号（最多16个字，如不填写将自动生成）" required v-model="sku.code" :readonly="isUpdate"/>
               </div>
               <div class="form-group">
                 <label for="name">名称</label>
-                <input id="name" type="text" class="form-control" placeholder="商品名称" required v-model="sku.name"/>
+                <input id="name" type="text" class="form-control" placeholder="商品名称（最多32个字）" required v-model="sku.name"/>
               </div>
               <div class="form-group">
                 <label for="price">价格</label>
-                <input id="price" type="text" class="form-control" placeholder="商品价格" required v-model="sku.price"/>
+                <input id="price" type="text" class="form-control" placeholder="商品价格（大于等于0）" required v-model="sku.price"/>
               </div>
               <div class="form-group">
                 <label for="color">颜色</label>
-                <input id="color" type="text" class="form-control" placeholder="商品颜色" required v-model="sku.color"/>
+                <input id="color" type="text" class="form-control" placeholder="商品颜色（最多16个字）" required v-model="sku.color"/>
               </div>
               <div class="form-group">
                 <label for="size">尺码</label>
-                <input id="size" type="text" class="form-control" placeholder="商品尺码" required v-model="sku.size"/>
+                <input id="size" type="text" class="form-control" placeholder="商品尺码（最多16个字）" required v-model="sku.size"/>
               </div>
               <div class="form-group">
                 <label for="stock">库存</label>
-                <input id="stock" type="text" class="form-control" placeholder="初始库存" required v-model.number="sku.stock" :readonly="isUpdate"/>
+                <input id="stock" type="text" class="form-control" placeholder="初始库存（大于等于0）" required v-model.number="sku.stock" :readonly="isUpdate"/>
               </div>
               <div class="alert alert-success alert-block" v-show="done">
                 <a class="close" data-dismiss="alert" href="#"></a>
@@ -87,7 +87,7 @@ export default {
     $(this.$el).on('show.bs.modal', (e) => {
       this.id = $(e.relatedTarget).data('sku-id')
       if (this.isUpdate) {
-        this.$http.get('http://localhost:8080/skus/' + this.id).then(resp => {
+        this.$http.get('skus/' + this.id).then(resp => {
           this.sku = resp.body
         }, resp => {
           console.log(resp)
@@ -101,7 +101,7 @@ export default {
   methods: {
     save: function () {
       if (this.isUpdate) {
-        this.$http.put('http://localhost:8080/skus/' + this.id, this.sku).then(resp => {
+        this.$http.put('skus/' + this.id, this.sku).then(resp => {
           this.done = true
           this.error = false
         }, resp => {
@@ -110,7 +110,7 @@ export default {
           console.log(resp)
         })
       } else {
-        this.$http.post('http://localhost:8080/skus', this.sku).then(resp => {
+        this.$http.post('skus', this.sku).then(resp => {
           this.done = true
           this.error = false
         }, resp => {

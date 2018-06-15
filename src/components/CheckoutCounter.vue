@@ -38,7 +38,7 @@ export default {
   methods: {
     search: function () {
       var code = this.code
-      this.$http.get('http://localhost:8080/skus', {
+      this.$http.get('skus', {
         params: {
           code: code
         }

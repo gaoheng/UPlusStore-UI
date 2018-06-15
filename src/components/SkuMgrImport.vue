@@ -5,7 +5,7 @@
         <section class="col col-md-4">
           <label for="file" class="input input-file">
             <div class="button">
-              <file-upload id="file" name="file" target="http://localhost:8080/sku-importings" action="POST" @finish="finishUpload"></file-upload>选择
+              <file-upload id="file" name="file" target="http://13.250.108.27:8080/sku-importings" action="POST" @finish="finishUpload"></file-upload>选择
             </div>
             <input placeholder="点击右侧“选择”按钮选择文件并上传..." readonly="" type="text">
           </label>
@@ -32,7 +32,7 @@
           </tr>
           </tbody>
         </table>
-        <form id="submit-form" action="http://localhost:8080/sku-importings" method="post" style="display: none;">
+        <form id="submit-form" method="post" style="display: none;">
           <a id="cancel-btn" class="btn btn-danger" @click="cancel">取消</a>
           <a id="enter-btn" class="btn btn-success" @click="submit" v-show="!done">导入</a>
           <a id="enter-btn" class="btn btn-success" @click="submit" v-show="done">继续导入</a>
@@ -51,6 +51,7 @@ export default {
   },
   data: function () {
     return {
+      done: false,
       batchNo: null
     }
   },
@@ -101,16 +102,18 @@ export default {
     },
     submit: function () {
       var _this = this
-      this.$http.put('http://localhost:8080/sku-importings/batches/' + this.batchNo, {
+      this.$http.put('sku-importings/batches/' + this.batchNo, {
       }).then(resp => {
         console.log('Resp:', resp)
         $('#table').DataTable().clear().destroy()
         _this.initTable(resp.body.list)
+        this.done = true
       })
     },
     cancel: function () {
       console.log('Cancel....')
       this.batchNo = null
+      this.done = false
       $('#table').DataTable().clear().destroy()
       $('#submit-form').hide()
     }

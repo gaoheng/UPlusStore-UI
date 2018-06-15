@@ -43,7 +43,7 @@ export default {
         ordering: false,
         serverSide: true,
         ajax: {
-          url: 'http://localhost:8080/skus'
+          url: 'http://13.250.108.27:8080/skus'
         },
         columns: [
           {

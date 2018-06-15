@@ -96,7 +96,7 @@ export default {
     },
     deal: function () {
       var order = this.order
-      this.$http.post('http://localhost:8080/orders', order).then(resp => {
+      this.$http.post('orders', order).then(resp => {
         console.log(resp)
         this.done = true
 
