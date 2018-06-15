@@ -15,32 +15,44 @@
             <div class="col-md-12">
               <div class="form-group">
                 <label for="code">货号</label>
-                <input id="code" type="text" class="form-control" placeholder="货号" required v-model="code" :readonly="isUpdate"/>
+                <input id="code" type="text" class="form-control" placeholder="货号" required v-model="sku.code" :readonly="isUpdate"/>
               </div>
               <div class="form-group">
                 <label for="name">名称</label>
-                <input id="name" type="text" class="form-control" placeholder="商品名称" required v-model="name"/>
+                <input id="name" type="text" class="form-control" placeholder="商品名称" required v-model="sku.name"/>
+              </div>
+              <div class="form-group">
+                <label for="price">价格</label>
+                <input id="price" type="text" class="form-control" placeholder="商品价格" required v-model="sku.price"/>
               </div>
               <div class="form-group">
                 <label for="color">颜色</label>
-                <input id="color" type="text" class="form-control" placeholder="商品颜色" required v-model="color"/>
+                <input id="color" type="text" class="form-control" placeholder="商品颜色" required v-model="sku.color"/>
               </div>
               <div class="form-group">
                 <label for="size">尺码</label>
-                <input id="size" type="text" class="form-control" placeholder="商品尺码" required v-model="size"/>
+                <input id="size" type="text" class="form-control" placeholder="商品尺码" required v-model="sku.size"/>
               </div>
               <div class="form-group">
                 <label for="stock">库存</label>
-                <input id="stock" type="text" class="form-control" placeholder="初始库存" required v-model="stock" :readonly="isUpdate"/>
+                <input id="stock" type="text" class="form-control" placeholder="初始库存" required v-model.number="sku.stock" :readonly="isUpdate"/>
+              </div>
+              <div class="alert alert-success alert-block" v-show="done">
+                <a class="close" data-dismiss="alert" href="#"></a>
+                <h4 class="alert-heading">保存成功！</h4>
+              </div>
+              <div class="alert alert-danger alert-block" v-show="error">
+                <a class="close" data-dismiss="alert" href="#"></a>
+                <h4 class="alert-heading">出错啦！提刀去找程序员算账吧！！！</h4>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">
-            取消
+            关闭
           </button>
-          <button type="button" class="btn btn-primary" @click="save">
+          <button type="button" class="btn btn-primary" @click="save" v-show="!done">
             保存
           </button>
         </div>
@@ -55,11 +67,15 @@ export default {
   data: function () {
     return {
       id: null,
-      code: '',
-      name: '',
-      color: '',
-      size: '',
-      stock: 0
+      sku: {
+        code: '',
+        name: '',
+        color: '',
+        size: '',
+        stock: 0
+      },
+      done: false,
+      error: false
     }
   },
   computed: {
@@ -70,6 +86,13 @@ export default {
   mounted: function () {
     $(this.$el).on('show.bs.modal', (e) => {
       this.id = $(e.relatedTarget).data('sku-id')
+      if (this.isUpdate) {
+        this.$http.get('http://localhost:8080/skus/' + this.id).then(resp => {
+          this.sku = resp.body
+        }, resp => {
+          console.log(resp)
+        })
+      }
       console.log(this.id)
     }).on('hide.bs.modal', (e) => {
       this.reset()
@@ -77,15 +100,37 @@ export default {
   },
   methods: {
     save: function () {
-      console.log(this.id)
+      if (this.isUpdate) {
+        this.$http.put('http://localhost:8080/skus/' + this.id, this.sku).then(resp => {
+          this.done = true
+          this.error = false
+        }, resp => {
+          this.error = true
+          this.done = false
+          console.log(resp)
+        })
+      } else {
+        this.$http.post('http://localhost:8080/skus', this.sku).then(resp => {
+          this.done = true
+          this.error = false
+        }, resp => {
+          this.error = true
+          this.done = false
+          console.log(resp)
+        })
+      }
     },
     reset: function () {
       this.id = null
-      this.code = ''
-      this.name = ''
-      this.color = ''
-      this.size = ''
-      this.stock = 0
+      this.sku = {
+        code: '',
+        name: '',
+        color: '',
+        size: '',
+        stock: 0
+      }
+      this.done = false
+      this.error = false
     }
   }
 }

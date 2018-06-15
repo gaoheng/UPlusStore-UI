@@ -14,23 +14,31 @@
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
-                <label for="delta">数量</label>
-                <input id="delta" type="text" class="form-control" placeholder="入库数量" required v-model="delta"/>
+                <label for="delta">{{ mode === 'in' ? '入库' : '出库' }}数量</label>
+                <input id="delta" type="text" class="form-control" placeholder="入库数量" required v-model.number="delta"/>
               </div>
               <div class="form-group">
                 <label for="reason">原因</label>
                 <select class="form-control" id="reason" v-model="reason">
-                  <option v-for="r in reasons" v-bind:key="r">{{ r }}</option>
+                  <option v-for="r in reasons" v-bind:key="r" :value="r">{{ r }}</option>
                 </select>
+              </div>
+              <div class="alert alert-success alert-block" v-show="done">
+                <a class="close" data-dismiss="alert" href="#"></a>
+                <h4 class="alert-heading">保存成功！</h4>
+              </div>
+              <div class="alert alert-danger alert-block" v-show="error">
+                <a class="close" data-dismiss="alert" href="#"></a>
+                <h4 class="alert-heading">出错啦！提刀去找程序员算账吧！！！</h4>
               </div>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">
-            取消
+            关闭
           </button>
-          <button type="button" class="btn btn-primary" @click="stockIn">
+          <button type="button" class="btn btn-primary" @click="save" v-show="!done">
             保存
           </button>
         </div>
@@ -53,7 +61,9 @@ export default {
     return {
       skuId: null,
       delta: 0,
-      reason: ''
+      reason: '',
+      done: false,
+      error: false
     }
   },
   computed: {
@@ -75,19 +85,33 @@ export default {
   mounted: function () {
     this.reason = this.reasons[0]
     $(this.$el).on('show.bs.modal', (e) => {
+      console.log($(e.relatedTarget).data('sku-id'))
       this.skuId = $(e.relatedTarget).data('sku-id')
     }).on('hide.bs.modal', (e) => {
       this.reset()
     })
   },
   methods: {
-    stockIn: function () {
-      console.log('Data:', this.$data)
+    save: function () {
+      let changement = {
+        delta: this.mode === 'in' ? this.delta : this.delta * -1,
+        reason: this.reason
+      }
+      this.$http.put('http://localhost:8080/skus/' + this.skuId + '/stock', changement).then(resp => {
+        this.done = true
+        this.error = false
+      }, resp => {
+        this.done = false
+        this.error = true
+        console.log(resp)
+      })
     },
     reset: function () {
       this.skuId = null
       this.delta = 0
       this.reason = this.reasons[0]
+      this.done = false
+      this.error = false
     }
   }
 }
