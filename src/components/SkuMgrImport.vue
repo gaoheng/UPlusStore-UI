@@ -34,7 +34,8 @@
         </table>
         <form id="submit-form" action="http://localhost:8080/sku-importings" method="post" style="display: none;">
           <a id="cancel-btn" class="btn btn-danger" @click="cancel">取消</a>
-          <a id="enter-btn" class="btn btn-success" @click="submit">导入</a>
+          <a id="enter-btn" class="btn btn-success" @click="submit" v-show="!done">导入</a>
+          <a id="enter-btn" class="btn btn-success" @click="submit" v-show="done">继续导入</a>
         </form>
       </div>
     </div>
@@ -55,35 +56,35 @@ export default {
   },
   methods: {
     initTable: function(list) {
-      $('#table').dataTable({
-        data: list,
-        pageLength: 15,
-        lengthChange: false,
-        searching: false,
-        scrollY: '560px',
-        scrollCollapse: true,
-        columns: [
-          {
-            data: 'importStatus',
-            orderable: false,
-            searchable: false,
-            render: function (data, type, row, meta) {
-              if (data === 'DONE') {
-                return '<span class="label label-success">成功</span>'
-              } else if (data === 'PENDING') {
-                return '<span class="label label-warning">待导入</span>'
-              } else if (data === 'FAILED') {
-                return '<span class="label label-danger">失败</span>'
-              }
-            }},
-          {'data': 'code', orderable: false, searchable: false},
-          {'data': 'name', orderable: false, searchable: false},
-          {'data': 'color', orderable: false, searchable: false},
-          {'data': 'size', orderable: false, searchable: false},
-          {'data': 'price', orderable: false, searchable: false},
-          {'data': 'quantity', orderable: false, searchable: false}
-        ]
-      })
+        $('#table').dataTable({
+          data: list,
+          pageLength: 15,
+          lengthChange: false,
+          searching: false,
+          scrollY: '560px',
+          scrollCollapse: true,
+          columns: [
+            {
+              data: 'importStatus',
+              orderable: false,
+              searchable: false,
+              render: function (data, type, row, meta) {
+                if (data === 'DONE') {
+                  return '<span class="label label-success">成功</span>'
+                } else if (data === 'PENDING') {
+                  return '<span class="label label-warning">待导入</span>'
+                } else if (data === 'FAILED') {
+                  return '<span class="label label-danger">失败</span>'
+                }
+              }},
+            {'data': 'code', orderable: false, searchable: false},
+            {'data': 'name', orderable: false, searchable: false},
+            {'data': 'color', orderable: false, searchable: false},
+            {'data': 'size', orderable: false, searchable: false},
+            {'data': 'price', orderable: false, searchable: false},
+            {'data': 'quantity', orderable: false, searchable: false}
+          ]
+        })
     },
     finishUpload: function (e) {
       $('#import-form')[0].reset()
@@ -92,8 +93,11 @@ export default {
       var resp = JSON.parse(e.target.response)
       console.log('Resp:', resp)
       this.batchNo = resp.batchNo
-      this.initTable(resp.list)
-      $('#submit-form').show()
+
+      if (resp.list !== null && resp.list.length > 0) {
+        this.initTable(resp.list)
+        $('#submit-form').show()
+      }
     },
     submit: function () {
       var _this = this
