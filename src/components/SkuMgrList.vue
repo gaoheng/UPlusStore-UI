@@ -43,7 +43,7 @@ export default {
         ordering: false,
         serverSide: true,
         ajax: {
-          url: 'http://13.250.108.27:8080/skus'
+          url: process.env.API_BASE + '/skus'
         },
         columns: [
           {

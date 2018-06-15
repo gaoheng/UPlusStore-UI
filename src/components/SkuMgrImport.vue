@@ -5,7 +5,7 @@
         <section class="col col-md-4">
           <label for="file" class="input input-file">
             <div class="button">
-              <file-upload id="file" name="file" target="http://13.250.108.27:8080/sku-importings" action="POST" @finish="finishUpload"></file-upload>选择
+              <file-upload id="file" name="file" :target="uploadUrl" action="POST" @finish="finishUpload"></file-upload>选择
             </div>
             <input placeholder="点击右侧“选择”按钮选择文件并上传..." readonly="" type="text">
           </label>
@@ -51,6 +51,7 @@ export default {
   },
   data: function () {
     return {
+      uploadUrl: process.env.API_BASE + '/sku-importings',
       done: false,
       batchNo: null
     }

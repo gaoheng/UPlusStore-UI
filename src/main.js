@@ -8,7 +8,7 @@ import App from './App'
 
 Vue.use(VueResource)
 Vue.config.productionTip = false
-Vue.http.options.root = 'http://13.250.108.27:8080'
+Vue.http.options.root = process.env.API_BASE
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -17,3 +17,4 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+console.log(process.env)
