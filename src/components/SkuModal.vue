@@ -104,6 +104,7 @@ export default {
         this.$http.put('skus/' + this.id, this.sku).then(resp => {
           this.done = true
           this.error = false
+          $('#sku-mgr-list-table').DataTable().draw(false)
         }, resp => {
           this.error = true
           this.done = false
@@ -113,6 +114,7 @@ export default {
         this.$http.post('skus', this.sku).then(resp => {
           this.done = true
           this.error = false
+          $('#sku-mgr-list-table').DataTable().draw(true)
         }, resp => {
           this.error = true
           this.done = false

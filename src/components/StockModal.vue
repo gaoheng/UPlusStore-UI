@@ -100,6 +100,7 @@ export default {
       this.$http.put('skus/' + this.skuId + '/stock', changement).then(resp => {
         this.done = true
         this.error = false
+        $('#sku-mgr-list-table').DataTable().draw(false)
       }, resp => {
         this.done = false
         this.error = true
