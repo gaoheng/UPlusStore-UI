@@ -21,17 +21,20 @@
       <stock-modal id="stockInModal" mode="in"></stock-modal>
       <stock-modal id="stockOutModal" mode="out"></stock-modal>
       <sku-modal id="skuModal"></sku-modal>
+      <print-modal id="printModal"></print-modal>
     </div>
 </template>
 
 <script>
 import StockModal from '@/components/StockModal'
 import SkuModal from "./SkuModal";
+import PrintModal from '@/components/PrintModal'
 export default {
   name: 'SkuMgrList',
   components: {
     SkuModal,
-    StockModal
+    StockModal,
+    PrintModal
   },
   mounted: function () {
     pageSetUp()
@@ -63,7 +66,8 @@ export default {
               return '' +
                 '<a title="入库" class="btn btn-xs btn-success" data-toggle="modal" data-target="#stockInModal" data-sku-id="' + id + '"><i class="fa fa-plus"></i> </a> ' +
                 '<a title="出库" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#stockOutModal" data-sku-id="' + id + '"><i class="fa fa-minus"></i> </a> ' +
-                '<a title="修改商品信息" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#skuModal" data-sku-id="' + id + '"><i class="fa fa-pencil"></i> </a> '
+                '<a title="修改商品信息" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#skuModal" data-sku-id="' + id + '"><i class="fa fa-pencil"></i> </a> ' +
+                '<a title="打印标签" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#printModal" data-sku-id="' + id + '"><i class="fa fa-print"></i> </a> '
             }
           }
         ]
