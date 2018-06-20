@@ -55,6 +55,9 @@
                 <button type="button" class="btn btn-lg btn-primary" v-show="!done" @click="deal">
                   结账
                 </button>
+                <button type="button" class="btn btn-lg btn-primary" v-show="done" @click="print">
+                  打印小票
+                </button>
                 <button type="button" class="btn btn-lg btn-primary" v-show="done" @click="clear">
                   结束
                 </button>
@@ -87,6 +90,13 @@ export default {
     }
   },
   methods: {
+    print: function () {
+      this.$http.post('http://localhost:8080/print/receipt', this.order).then(resp => {
+        console.log(resp)
+      }, resp => {
+        console.log(resp)
+      })
+    },
     clear: function () {
       this.items = []
       this.discount = 0.0
@@ -98,6 +108,7 @@ export default {
       var order = this.order
       this.$http.post('orders', order).then(resp => {
         console.log(resp)
+        this.order.id = resp.body.id
         this.done = true
 
       }, resp => {
@@ -124,6 +135,7 @@ export default {
   },
   computed: {
     order: function () {
+      var quantity = this.summary.quantity
       var total = this.summary.cost
       var discount = this.discount
       var paid = this.total
@@ -137,10 +149,13 @@ export default {
           skuColor: it.color,
           skuSize: it.size,
           skuPrice: it.price,
-          quantity: it.quantity
+          quantity: it.quantity,
+          total: numeral(it.price * it.quantity).format('0.00')
         })
       }
       return {
+        id: null,
+        quantity: quantity,
         total: total,
         discount: discount,
         paid: paid,
